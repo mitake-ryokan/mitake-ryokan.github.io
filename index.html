@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIみるくちゃん｜温泉旅館みたけ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Yu Gothic", sans-serif;
+    background: #fffaf0;
+    color: #4a3728;
+    display: flex; flex-direction: column; min-height: 100vh;
+  }
+
+  /* ===== 動くみるくちゃん(本物イラスト・3層構成) ===== */
+  header { text-align: center; padding: 14px 12px 4px; }
+  .milk-stage {
+    position: relative;
+    width: 170px; height: 210px;      /* 500x618の比率 */
+    margin: 0 auto;
+    animation: breathe 4s ease-in-out infinite;
+    transform-origin: center bottom;
+  }
+  .milk-stage img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1, 1); }
+    50%      { transform: scale(1.012, 0.988); }
+  }
+
+  /* しっぽ: 体の後ろで根元(88.2% 90.5%)を軸にゆらゆら */
+  .tail {
+    z-index: 1;
+    transform-origin: 88.2% 90.5%;
+    animation: sway 3.2s ease-in-out infinite;
+  }
+  @keyframes sway {
+    0%, 100% { transform: rotate(0deg); }
+    50%      { transform: rotate(-9deg); }
+  }
+
+  /* 体(目を開けた絵)が最前面 */
+  .body-open { z-index: 2; }
+
+  /* 目を閉じた絵を重ねて、5秒ごとに一瞬だけ表示=瞬き */
+  .body-closed { z-index: 3; opacity: 0; animation: blink 5s infinite; }
+  @keyframes blink {
+    0%, 91.9%, 96.1%, 100% { opacity: 0; }
+    92%, 96%               { opacity: 1; }
+  }
+
+  h1 { font-size: 1.25rem; margin-top: 8px; letter-spacing: 0.05em; }
+  .sub { font-size: 0.8rem; color: #8a7358; margin-top: 4px; }
+
+  .chat-wrap { flex: 1; display: flex; padding: 10px 8px 8px; }
+  .chat-wrap iframe {
+    flex: 1; width: 100%; min-height: 480px;
+    border: 2px solid #c9a86a; border-radius: 16px; background: #fff;
+  }
+
+  footer { text-align: center; font-size: 0.72rem; color: #8a7358; padding: 6px 0 10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="milk-stage">
+    <img class="tail"        src="milk_tail_web_v4.png"        alt="">
+    <img class="body-open"   src="milk_body_web_v4.png"        alt="AIみるくちゃん">
+    <img class="body-closed" src="milk_body_closed_web_v4.png" alt="">
+  </div>
+  <h1>AIみるくちゃんに何でも聞いてにゃ</h1>
+  <p class="sub">温泉旅館みたけ 公式AI案内係｜24時間対応｜English・中文・한국어 OK</p>
+</header>
+
+<div class="chat-wrap">
+  <iframe src="https://udify.app/chatbot/bvFGYCLLQLqURrWp" allow="microphone" title="AIみるくちゃんチャット"></iframe>
+</div>
+
+<footer>温泉旅館みたけ ☎ 0460-84-8344｜神奈川県足柄下郡箱根町仙石原937</footer>
+
+</body>
+</html>
