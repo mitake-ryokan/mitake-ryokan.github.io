@@ -10,7 +10,7 @@
     font-family: "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Yu Gothic", sans-serif;
     background: #fffaf0;
     color: #4a3728;
-    display: flex; flex-direction: column; min-height: 100vh;
+    display: flex; flex-direction: column; height: 100dvh; overflow: hidden;
   }
 
   /* ===== 動くみるくちゃん(本物イラスト・3層構成) ===== */
@@ -57,11 +57,22 @@
 
   .chat-wrap { flex: 1; display: flex; padding: 10px 8px 8px; }
   .chat-wrap iframe {
-    flex: 1; width: 100%; min-height: 480px;
+    flex: 1; width: 100%; min-height: 0; height: 100%;
     border: 2px solid #c9a86a; border-radius: 16px; background: #fff;
   }
 
   footer { text-align: center; font-size: 0.72rem; color: #8a7358; padding: 6px 0 10px; }
+
+  /* ===== スマホ最適化: ヘッダーを小さく、チャットに画面の大半を渡す ===== */
+  @media (max-width: 520px) {
+    header { padding: 8px 8px 2px; }
+    .milk-stage { width: 96px; height: 119px; }
+    h1 { font-size: 1.0rem; margin-top: 4px; }
+    .sub { font-size: 0.62rem; margin-top: 2px; }
+    .chat-wrap { padding: 6px 4px 4px; }
+    .chat-wrap iframe { border-radius: 12px; border-width: 1.5px; }
+    footer { font-size: 0.58rem; padding: 3px 0 6px; }
+  }
 </style>
 </head>
 <body>
