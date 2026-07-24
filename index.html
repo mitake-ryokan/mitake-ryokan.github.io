@@ -6,72 +6,43 @@
 <title>AIみるくちゃん｜温泉旅館みたけ</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
   body {
     font-family: "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Yu Gothic", sans-serif;
-    background: #fffaf0;
-    color: #4a3728;
-    display: flex; flex-direction: column; height: 100dvh; overflow: hidden;
+    background: #fffaf0; color: #4a3728;
+    height: 100dvh; display: flex; flex-direction: column; overflow: hidden;
   }
 
-  /* ===== 動くみるくちゃん(本物イラスト・3層構成) ===== */
-  header { text-align: center; padding: 14px 12px 4px; }
+  header { flex: 0 0 auto; text-align: center; padding: 10px 12px 4px; }
   .milk-stage {
-    position: relative;
-    width: 170px; height: 210px;      /* 500x618の比率 */
-    margin: 0 auto;
-    animation: breathe 4s ease-in-out infinite;
-    transform-origin: center bottom;
+    position: relative; width: 96px; height: 119px; margin: 0 auto;
+    animation: breathe 4s ease-in-out infinite; transform-origin: center bottom;
   }
-  .milk-stage img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-  }
-  @keyframes breathe {
-    0%, 100% { transform: scale(1, 1); }
-    50%      { transform: scale(1.012, 0.988); }
-  }
-
-  /* しっぽ: 体の後ろで根元(88.2% 90.5%)を軸にゆらゆら */
-  .tail {
-    z-index: 1;
-    transform-origin: 88.2% 90.5%;
-    animation: sway 3.2s ease-in-out infinite;
-  }
-  @keyframes sway {
-    0%, 100% { transform: rotate(0deg); }
-    50%      { transform: rotate(-9deg); }
-  }
-
-  /* 体(目を開けた絵)が最前面 */
+  .milk-stage img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  @keyframes breathe { 0%,100%{transform:scale(1,1);} 50%{transform:scale(1.012,0.988);} }
+  .tail { z-index: 1; transform-origin: 88.2% 90.5%; animation: sway 3.2s ease-in-out infinite; }
+  @keyframes sway { 0%,100%{transform:rotate(0deg);} 50%{transform:rotate(-9deg);} }
   .body-open { z-index: 2; }
-
-  /* 目を閉じた絵を重ねて、5秒ごとに一瞬だけ表示=瞬き */
   .body-closed { z-index: 3; opacity: 0; animation: blink 5s infinite; }
-  @keyframes blink {
-    0%, 91.9%, 96.1%, 100% { opacity: 0; }
-    92%, 96%               { opacity: 1; }
-  }
+  @keyframes blink { 0%,91.9%,96.1%,100%{opacity:0;} 92%,96%{opacity:1;} }
 
-  h1 { font-size: 1.25rem; margin-top: 8px; letter-spacing: 0.05em; }
-  .sub { font-size: 0.8rem; color: #8a7358; margin-top: 4px; }
+  h1 { font-size: 1.05rem; margin-top: 5px; letter-spacing: .04em; }
+  .sub { font-size: .68rem; color: #8a7358; margin-top: 3px; }
 
-  .chat-wrap { flex: 1; display: flex; padding: 10px 8px 8px; }
+  .chat-wrap { flex: 1 1 auto; min-height: 0; display: flex; padding: 8px 8px 6px; }
   .chat-wrap iframe {
-    flex: 1; width: 100%; min-height: 0; height: 100%;
-    border: 2px solid #c9a86a; border-radius: 16px; background: #fff;
+    flex: 1 1 auto; width: 100%; height: 100%; min-height: 0;
+    border: 2px solid #c9a86a; border-radius: 14px; background: #fff;
   }
 
-  footer { text-align: center; font-size: 0.72rem; color: #8a7358; padding: 6px 0 10px; }
+  footer { flex: 0 0 auto; text-align: center; font-size: .62rem; color: #a89a80; padding: 4px 0 6px; }
 
-  /* ===== スマホ最適化: ヘッダーを小さく、チャットに画面の大半を渡す ===== */
-  @media (max-width: 520px) {
-    header { padding: 8px 8px 2px; }
-    .milk-stage { width: 96px; height: 119px; }
-    h1 { font-size: 1.0rem; margin-top: 4px; }
-    .sub { font-size: 0.62rem; margin-top: 2px; }
-    .chat-wrap { padding: 6px 4px 4px; }
-    .chat-wrap iframe { border-radius: 12px; border-width: 1.5px; }
-    footer { font-size: 0.58rem; padding: 3px 0 6px; }
+  @media (min-width: 720px) {
+    .milk-stage { width: 120px; height: 149px; }
+    h1 { font-size: 1.25rem; }
+    .sub { font-size: .8rem; }
+    .chat-wrap { padding: 10px 16px 8px; max-width: 900px; width: 100%; margin: 0 auto; }
+    footer { font-size: .72rem; }
   }
 </style>
 </head>
@@ -91,7 +62,7 @@
   <iframe src="https://udify.app/chatbot/bvFGYCLLQLqURrWp" allow="microphone" title="AIみるくちゃんチャット"></iframe>
 </div>
 
-<footer>温泉旅館みたけ ☎ 0460-84-8344｜神奈川県足柄下郡箱根町仙石原937</footer>
+<footer>温泉旅館みたけ ☎ 0460-84-8344｜箱根・仙石原</footer>
 
 </body>
 </html>

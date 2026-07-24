@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>にゃんみくじ｜AIみるくちゃん・温泉旅館みたけ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Yu Gothic", sans-serif;
+    background: #fffaf0; color: #4a3728;
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; padding: 18px 14px 40px; text-align: center;
+  }
+  .cat { width: 120px; height: 148px; margin: 0 auto; animation: breathe 4s ease-in-out infinite; }
+  @keyframes breathe { 0%,100%{transform:scale(1,1);} 50%{transform:scale(1.02,0.98);} }
+  h1 { font-size: 1.4rem; margin: 10px 0 2px; letter-spacing: .04em; }
+  .sub { font-size: .78rem; color: #8a7358; margin-bottom: 18px; }
+
+  .draw-btn {
+    font-family: inherit; font-size: 1.25rem; font-weight: bold; color: #fff;
+    background: #d64528; border: none; border-radius: 40px;
+    padding: 16px 44px; cursor: pointer; box-shadow: 0 4px 0 #a6331c;
+    transition: transform .08s, box-shadow .08s; letter-spacing: .05em;
+  }
+  .draw-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #a6331c; }
+
+  .result {
+    margin-top: 22px; width: 100%; max-width: 420px;
+    background: #fff; border: 3px solid #c9a86a; border-radius: 20px;
+    padding: 22px 20px; opacity: 0; transform: translateY(14px);
+    transition: opacity .4s, transform .4s;
+  }
+  .result.show { opacity: 1; transform: translateY(0); }
+  .fortune { font-size: 2.6rem; font-weight: bold; color: #d64528; margin-bottom: 2px; letter-spacing: .1em; }
+  .fortune-msg { font-size: .95rem; color: #4a3728; margin-bottom: 18px; }
+  .row { text-align: left; background: #fdf3dd; border-radius: 12px; padding: 12px 14px; margin-top: 12px; }
+  .row .label { font-size: .72rem; color: #b0894a; font-weight: bold; margin-bottom: 4px; }
+  .row .val { font-size: .95rem; color: #4a3728; line-height: 1.5; }
+  .again { margin-top: 18px; font-size: .85rem; color: #8a7358; }
+  .again a, .backlink a { color: #b0894a; }
+  .backlink { margin-top: 26px; font-size: .82rem; }
+  footer { margin-top: 30px; font-size: .7rem; color: #a89a80; }
+</style>
+</head>
+<body>
+
+  <img class="cat" src="milk_body_web_v4.png" alt="AIみるくちゃん">
+  <h1>にゃんみくじ 🐾</h1>
+  <p class="sub">温泉旅館みたけ AI案内係「みるく」より</p>
+
+  <button class="draw-btn" onclick="drawOmikuji()">みくじを引くのにゃ！</button>
+
+  <div class="result" id="result">
+    <div class="fortune" id="fortune"></div>
+    <div class="fortune-msg" id="fortuneMsg"></div>
+    <div class="row"><div class="label">🎲 今日のラッキーボードゲーム</div><div class="val" id="game"></div></div>
+    <div class="row"><div class="label">♨ 箱根・みたけの豆知識</div><div class="val" id="trivia"></div></div>
+    <div class="again">👆 もう一回引けるのにゃ！</div>
+  </div>
+
+  <p class="backlink">みるくとお話したいときは <a href="index.html">AIみるくちゃんチャットへ →</a></p>
+  <footer>温泉旅館みたけ ☎ 0460-84-8344｜箱根・仙石原</footer>
+
+<script>
+  const fortunes = [
+    ["大吉", "さいっこうの一日になりそうなのにゃ！なんでもうまくいく予感にゃ🐾"],
+    ["中吉", "いいこと、たくさんありそうなのにゃ😺 ごきげんな一日にゃ！"],
+    ["小吉", "ちいさな幸せがいくつも待ってるのにゃ🐾"],
+    ["末吉", "これからじわじわ運気が上がっていくのにゃ！焦らずいくにゃ😺"],
+    ["吉",   "おだやかで心地よい一日になりそうなのにゃ🐾"],
+    ["凶",   "ちょっぴり気をつける日にゃ…でも温泉に入ればぜんぶ流せるのにゃ🐾"],
+    ["大凶", "うーん…でも一番下で引いたなら、あとは上がるだけなのにゃ！お風呂でリセットにゃ😺"]
+  ];
+  const games = [
+    "カタン（Catan）— 開拓競争の大定番！ラッキーにゃ🐾",
+    "カルカソンヌ（Carcassonne）— タイルで街づくりにゃ",
+    "コードネーム（Codenames）— 2チームで暗号あてなのにゃ",
+    "ナンジャモンジャ — 名前をつけて大笑いなのにゃ😺",
+    "ソクラテスラ — 偉人たちのキメラバトルが熱いにゃ",
+    "ラブレター（Love Letter）— さくっと遊べる名作にゃ",
+    "ディクシット（Dixit）— 幻想的で美しいカードにゃ",
+    "ごきぶりポーカー — うそつき勝負でドキドキにゃ",
+    "パンデミック（Pandemic）— みんなで世界を救うのにゃ",
+    "どうぶつしょうぎ — お子さんにもぴったりなのにゃ🐾",
+    "アズール（Azul）— タイルが美しいパズルにゃ",
+    "キャプテン・リノ — つみあげてハラハラなのにゃ",
+    "イト（ito）— 数字で心を通わせる協力ゲームにゃ",
+    "おばけキャッチ — すばやさ勝負で盛り上がるにゃ",
+    "宝石の煌き（Splendor）— きらめく宝石を集めるのにゃ✨"
+  ];
+  const trivia = [
+    "箱根には「箱根十七湯」という17もの温泉場があるのにゃ🐾",
+    "みたけがある仙石原温泉は、標高700mの高原リゾートなのにゃ😺",
+    "みたけの白いにごり湯は、大涌谷から引いた源泉かけ流しなのにゃ！",
+    "大涌谷の黒たまごは「1個で寿命が7年延びる」と言われてるのにゃ🐾",
+    "仙石原のすすき草原は、秋になると黄金色に輝く絶景なのにゃ✨",
+    "芦ノ湖では海賊船に乗れて、富士山も見えるのにゃ🐾",
+    "箱根の温泉は泉質が約20種類！「温泉のデパート」と呼ばれるのにゃ😺",
+    "箱根駅伝の往路ゴールは芦ノ湖畔なのにゃ。お正月の名物にゃ！",
+    "箱根寄木細工は、木を組み合わせて模様を作る伝統工芸なのにゃ🐾",
+    "金時山は童話「金太郎」の舞台なのにゃ。山頂から富士山が見えるにゃ！",
+    "みたけには本物の看板猫がいるのにゃ🐾 みるくの仲間たちにゃ！",
+    "みたけのボードゲームは日本一の645種類以上なのにゃ、すごいにゃ😺",
+    "箱根関所は江戸時代の「入り鉄砲に出女」を見張った場所なのにゃ🐾",
+    "大涌谷は約3000年前の水蒸気爆発でできた噴煙地なのにゃ！",
+    "芦ノ湖のほとりの箱根神社は、湖に立つ鳥居が人気なのにゃ⛩️",
+    "みたけのお食事は、朝も夕もお部屋でゆっくり和食膳なのにゃ🐾",
+    "姥子温泉の名前は、金太郎を育てた山姥の伝説からきてるのにゃ😺",
+    "ポーラ美術館や箱根ガラスの森美術館も、みたけから近いのにゃ🎨",
+    "みたけの貸切風呂は予約不要・無料で入れるのにゃ🐾 空いてたらどうぞにゃ！",
+    "仙石原の「湯立獅子舞」は国の無形民俗文化財なのにゃ😺"
+  ];
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function drawOmikuji(){
+    const f = pick(fortunes);
+    document.getElementById("fortune").textContent   = f[0];
+    document.getElementById("fortuneMsg").textContent = f[1];
+    document.getElementById("game").textContent   = pick(games);
+    document.getElementById("trivia").textContent = pick(trivia);
+    const r = document.getElementById("result");
+    r.classList.remove("show"); void r.offsetWidth; r.classList.add("show");
+  }
+</script>
+</body>
+</html>
